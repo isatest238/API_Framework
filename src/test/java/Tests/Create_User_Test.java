@@ -28,6 +28,8 @@ public class Create_User_Test {
         System.out.println();
 
         System.out.println("Step 3: get new user ");
+        getSpecificUser();
+
     }
 
     public void createAccount() {
@@ -45,6 +47,7 @@ public class Create_User_Test {
         Response response = requestSpecification.post("api/v1/users");
         System.out.println(response.getStatusCode());
         System.out.println(response.getStatusLine());
+        Assert.assertEquals(response.getStatusCode(), 201);
 
         //validam response body-ul
         ResponseAccountSuccess responseAccountBody = response.body().as(ResponseAccountSuccess.class);
@@ -68,6 +71,7 @@ public class Create_User_Test {
         // interactionam cu response-ul
         Response response = requestSpecification.post("api/v1/auth/login");
         System.out.println(response.getStatusCode());
+        Assert.assertEquals(response.getStatusCode(), 201);
         System.out.println(response.getStatusLine());
 
         //validam response body-ul
@@ -91,6 +95,13 @@ public class Create_User_Test {
 
         // interactionam cu response-ul
         Response response = requestSpecification.get("api/v1/users/" + userID);
+        System.out.println(response.getStatusLine());
+        System.out.println(response.getStatusCode());
+        Assert.assertEquals(response.getStatusCode(), 200);
+
+        //validam response body-ul
+        ResponseAccountSuccess responseAccountGetSuccess = response.body().as(ResponseAccountSuccess.class);
+        Assert.assertEquals(responseAccountGetSuccess.getName(), requestUserBody.getName());
     }
 }
 
