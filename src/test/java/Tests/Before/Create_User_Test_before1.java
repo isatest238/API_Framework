@@ -7,7 +7,7 @@ import io.restassured.specification.RequestSpecification;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
 
-public class Create_User_Test_before {
+public class Create_User_Test_before1 {
 
     @Test
     public void testMethod() {

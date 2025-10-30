@@ -16,6 +16,8 @@ public class ResponseAccountSuccess {
     private String avatar;
     @JsonProperty("creationAt")
     private String creationAt;
+    @JsonProperty("updatedAt")
+    private String updatedAt;
 
     public Integer getId() {
         return id;
@@ -25,8 +27,6 @@ public class ResponseAccountSuccess {
         this.id = id;
     }
 
-    @JsonProperty("updatedAt")
-    private String updatedAt;
 
     public String getEmail() {
         return email;
