@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ResponseAccountSuccess {
     @JsonProperty("id")
-    private Integer id;
+    private String id;
     private String email;
     @JsonProperty("password")
     private String password;
@@ -19,11 +19,11 @@ public class ResponseAccountSuccess {
     @JsonProperty("updatedAt")
     private String updatedAt;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

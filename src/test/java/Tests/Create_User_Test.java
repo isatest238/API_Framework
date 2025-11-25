@@ -1,5 +1,6 @@
 package Tests;
 
+import Actions.Account_Actions;
 import ObjectData.RequestObject.Request_User;
 import ObjectData.ResponseObject.ResponseAccountSuccess;
 import ObjectData.ResponseObject.Response_Token_Success;
@@ -12,10 +13,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class Create_User_Test {
-    public Integer userID;
+    public String userID;
     public Request_User requestUserBody;
     public String token;
-
+    public Account_Actions accountActions;
 
     @Test
     public void testMethod() {
@@ -27,81 +28,47 @@ public class Create_User_Test {
         generateToken();
         System.out.println();
 
-        System.out.println("Step 3: get new user ");
+        System.out.println("Step 3: get specific user ");
         getSpecificUser();
 
+        System.out.println("Step 4: delete specific user ");
+        deleteSpecificUser();
+        System.out.println();
+
+        System.out.println("Step 5: verify specific user after deletion");
+        getSpecificUser();
+        System.out.println();
     }
 
     public void createAccount() {
-        // definim configurilele pentru client
-        RequestSpecification requestSpecification = RestAssured.given();
-        requestSpecification.baseUri("https://api.escuelajs.co/");
-        requestSpecification.contentType("application/json");
+        // instantam clasa de Actions
+        accountActions = new Account_Actions();
 
-        //definim requestul
+        // 41 , 42 pregateste body ul
         Property_Utility propertyUtility = new Property_Utility("RequestData/CreateUserData");
         requestUserBody = new Request_User(propertyUtility.getAllData());
-        requestSpecification.body(requestUserBody);
 
-        // interactionam cu response-ul
-        Response response = requestSpecification.post("api/v1/users");
-        System.out.println(response.getStatusCode());
-        System.out.println(response.getStatusLine());
-        Assert.assertEquals(response.getStatusCode(), 201);
+        // 45 - chemam layer3 de account action care trigger pe cea de jos
+        // - face actiunea de post si returneaza rez in response account success - si extrage user ID
+        ResponseAccountSuccess responseAccountBody = accountActions.createNewAccount(requestUserBody);
+        userID = responseAccountBody.getId().toString();
 
-        //validam response body-ul
-        ResponseAccountSuccess responseAccountBody = response.body().as(ResponseAccountSuccess.class);
-        userID = responseAccountBody.getId();
-        System.out.println("UserID: " + responseAccountBody.getId());
-        System.out.println("Email: " + responseAccountBody.getEmail());
-        System.out.println("Password: " + responseAccountBody.getPassword());
-        Assert.assertEquals(responseAccountBody.getName(), requestUserBody.getName());
     }
 
     public void generateToken() {
-        // definim configurilele pentru client
-        RequestSpecification requestSpecification = RestAssured.given();
-        requestSpecification.baseUri("https://api.escuelajs.co/");
-        requestSpecification.contentType("application/json");
-
-        //definim requestul
-        requestSpecification.body(requestUserBody);
-
-
-        // interactionam cu response-ul
-        Response response = requestSpecification.post("api/v1/auth/login");
-        System.out.println(response.getStatusCode());
-        Assert.assertEquals(response.getStatusCode(), 201);
-        System.out.println(response.getStatusLine());
-
-        //validam response body-ul
-        Response_Token_Success responseTokenSuccess = response.body().as(Response_Token_Success.class);
+        Response_Token_Success responseTokenSuccess = accountActions.generateToken(requestUserBody);
         System.out.println("Access Token:" + responseTokenSuccess.getAccess_token());
         token = responseTokenSuccess.getAccess_token();
-        System.out.println("Refresh Token:" + responseTokenSuccess.getRefresh_token());
-        Assert.assertEquals(response.getStatusCode(), 201, "Login request failed — expected 201 Created");
-        Assert.assertNotNull(responseTokenSuccess.getAccess_token(), "Access token is null!");
-        Assert.assertFalse(responseTokenSuccess.getAccess_token().isEmpty(), "Access token is empty!");
-        Assert.assertNotNull(responseTokenSuccess.getRefresh_token(), "Refresh token is null!");
-
     }
 
     public void getSpecificUser() {
-        // definim configurilele pentru client
-        RequestSpecification requestSpecification = RestAssured.given();
-        requestSpecification.baseUri("https://api.escuelajs.co/");
-        requestSpecification.contentType("application/json");
-        requestSpecification.header("Autorization", "Bearer " + token); //pui autorizarea in header
-
-        // interactionam cu response-ul
-        Response response = requestSpecification.get("api/v1/users/" + userID);
-        System.out.println(response.getStatusLine());
-        System.out.println(response.getStatusCode());
-        Assert.assertEquals(response.getStatusCode(), 200);
-
-        //validam response body-ul
-        ResponseAccountSuccess responseAccountGetSuccess = response.body().as(ResponseAccountSuccess.class);
-        Assert.assertEquals(responseAccountGetSuccess.getName(), requestUserBody.getName());
+        accountActions.getSpecificAccount(userID, requestUserBody);
     }
+
+    public void deleteSpecificUser() {
+        accountActions.deleteSpecificAccount(userID);
+    }
+
+
 }
 
