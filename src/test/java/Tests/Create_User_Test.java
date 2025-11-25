@@ -20,22 +20,23 @@ public class Create_User_Test {
 
     @Test
     public void testMethod() {
-        System.out.println("Step 1: create new account");
+        System.out.println("Step 1: CREATE NEW USER");
         createAccount();
         System.out.println();
 
-        System.out.println("Step 2: generate new token");
+        System.out.println("Step 2: GENERATE NEW TOKEN ");
         generateToken();
         System.out.println();
 
-        System.out.println("Step 3: get specific user ");
+        System.out.println("Step 3: GET SPECIFIC USER ");
         getSpecificUser();
+        System.out.println();
 
-        System.out.println("Step 4: delete specific user ");
+        System.out.println("Step 4: DELETE SPECIFIC USER ");
         deleteSpecificUser();
         System.out.println();
 
-        System.out.println("Step 5: verify specific user after deletion");
+        System.out.println("Step 5: VERIFY SPECIFIC USER AFTER DELETION");
         getSpecificUser();
         System.out.println();
     }
