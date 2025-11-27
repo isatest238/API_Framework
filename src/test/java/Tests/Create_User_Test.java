@@ -5,6 +5,9 @@ import ObjectData.RequestObject.Request_User;
 import ObjectData.ResponseObject.ResponseAccountSuccess;
 import ObjectData.ResponseObject.Response_Token_Success;
 import Property_Utility.Property_Utility;
+import extentUtility.ExtentUtility;
+import extentUtility.ReportStep;
+import hooks.Hooks;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
@@ -12,7 +15,7 @@ import io.restassured.specification.RequestSpecification;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-public class Create_User_Test {
+public class Create_User_Test extends Hooks {
     public String userID;
     public Request_User requestUserBody;
     public String token;
@@ -22,23 +25,24 @@ public class Create_User_Test {
     public void testMethod() {
         System.out.println("Step 1: CREATE NEW USER");
         createAccount();
-        System.out.println();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "New account created with success ");
 
-        System.out.println("Step 2: GENERATE NEW TOKEN ");
+
+        System.out.println("\n Step 2: GENERATE NEW TOKEN ");
         generateToken();
-        System.out.println();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Token generated with success ");
 
-        System.out.println("Step 3: GET SPECIFIC USER ");
+        System.out.println("\n Step 3: GET SPECIFIC USER ");
         getSpecificUser();
-        System.out.println();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific user validated with success ");
 
-        System.out.println("Step 4: DELETE SPECIFIC USER ");
+        System.out.println("\n Step 4: DELETE SPECIFIC USER ");
         deleteSpecificUser();
-        System.out.println();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific user deleted");
 
-        System.out.println("Step 5: VERIFY SPECIFIC USER AFTER DELETION");
+        System.out.println("\n Step 5: VERIFY SPECIFIC USER AFTER DELETION");
         getSpecificUser();
-        System.out.println();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific user deletion is confirmed with success ");
     }
 
     public void createAccount() {
@@ -53,7 +57,6 @@ public class Create_User_Test {
         // - face actiunea de post si returneaza rez in response account success - si extrage user ID
         ResponseAccountSuccess responseAccountBody = accountActions.createNewAccount(requestUserBody);
         userID = responseAccountBody.getId().toString();
-
     }
 
     public void generateToken() {
