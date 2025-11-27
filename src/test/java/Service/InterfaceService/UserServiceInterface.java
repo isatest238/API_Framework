@@ -14,6 +14,4 @@ public interface UserServiceInterface {
     Response getSpecificAccount(String userID);
 
     Response deleteSpecificAccount(String userID);
-
-
 }

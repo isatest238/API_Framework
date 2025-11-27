@@ -20,6 +20,17 @@ public class CommonAPIService {
         ServiceHelper.responseLogs(response);
         return  response;
     }
+    public Response post(Object body, String endPoint, String token) {
+        RequestSpecification requestSpecification = RestAssured.given();
+        // pentru acest tip de metoda o sa facem un POST cu un body
+        requestSpecification.header("Authorization", "Bearer " + token);
+        requestSpecification.body(body);
+        ServiceHelper.requestLogs(requestSpecification, endPoint, RequestType.REQUEST_POST);
+
+        Response response = performRequest(RequestType.REQUEST_POST, requestSpecification, endPoint);
+        ServiceHelper.responseLogs(response);
+        return  response;
+    }
 
     public Response get (String userID, String endPoint){
         RequestSpecification requestSpecification = RestAssured.given();
