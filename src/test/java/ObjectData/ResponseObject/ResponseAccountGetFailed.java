@@ -1,6 +1,9 @@
 package ObjectData.ResponseObject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+
+@Getter
 
 public class ResponseAccountGetFailed {
     @JsonProperty("name")
@@ -14,20 +17,4 @@ public class ResponseAccountGetFailed {
 
     @JsonProperty("timestamp")
     private String timestamp;
-
-    public String getName() {
-        return name;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
 }

@@ -2,19 +2,22 @@ package ObjectData.RequestObject;
 
 import ObjectData.ModelObject.BookProduct;
 import ObjectData.Request_Preparation;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+@Data
 public class Request_Product implements Request_Preparation {
 
     private String title;
     private Integer price;
     private String description;
     private Integer categoryId;
-    private List<BookProduct> images;
+    //private List<BookProduct> images;
+    private List<String> images;
 
     public Request_Product(HashMap<String, String> testData) {
         prepareObject(testData);
@@ -49,48 +52,11 @@ public class Request_Product implements Request_Preparation {
         images = new ArrayList<>();
         String[] products = value.split(",");
         for (String product : products) {
-            images.add(new BookProduct(product));
+            //images.add(new BookProduct(product));
+            images.add(product.trim());
+
         }
 
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public List<BookProduct> getImages() {
-        return images;
-    }
-
-    public void setImages(List<BookProduct> images) {
-        this.images = images;
-    }
 }

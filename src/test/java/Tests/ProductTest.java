@@ -69,6 +69,9 @@ public class ProductTest extends Hooks {
         Property_Utility propertyUtility = new Property_Utility("RequestData/BookProductData");
         HashMap<String, String> testData = propertyUtility.getAllData();
         testData.put("userID", userID);
+        String uniqueTitle = "New Product " + System.currentTimeMillis();
+        testData.put("title", uniqueTitle);
+
         requestProduct = new Request_Product(testData);
 
         productStoreActions = new ProductStoreActions();

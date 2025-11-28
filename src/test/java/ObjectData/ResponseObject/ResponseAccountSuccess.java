@@ -1,10 +1,15 @@
 package ObjectData.ResponseObject;
 
+import ObjectData.ResponseNotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import org.testng.Assert;
 
-public class ResponseAccountSuccess {
+@Getter
+public class ResponseAccountSuccess implements ResponseNotNull {
     @JsonProperty("id")
     private String id;
+    @JsonProperty("email")
     private String email;
     @JsonProperty("password")
     private String password;
@@ -19,40 +24,13 @@ public class ResponseAccountSuccess {
     @JsonProperty("updatedAt")
     private String updatedAt;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public String getCreationAt() {
-        return creationAt;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
+    @Override
+    public void validateNotNullFields() {
+        Assert.assertNotNull(id);
+        Assert.assertNotNull(email);
+        Assert.assertNotNull(password);
+        Assert.assertNotNull(name);
+        Assert.assertNotNull(creationAt);
+        Assert.assertNotNull(updatedAt);
     }
 }

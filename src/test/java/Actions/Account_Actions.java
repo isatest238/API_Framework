@@ -5,7 +5,7 @@ import ObjectData.ResponseObject.ResponseAccountGetFailed;
 import ObjectData.ResponseObject.ResponseAccountSuccess;
 import ObjectData.ResponseObject.Response_Token_Success;
 import RestClient.ResponseStatus;
-import Service.Implementation.UserServiceImp;
+import Service.ServiceImplementation.UserServiceImp;
 import io.restassured.response.Response;
 import org.testng.Assert;
 
@@ -19,23 +19,32 @@ public class Account_Actions {
 
     public ResponseAccountSuccess createNewAccount(Request_User request_User) {
         Response response = userServiceImp.createUser(request_User);
+
         Assert.assertEquals(response.getStatusCode(), ResponseStatus.SC_CREATED);
         ResponseAccountSuccess responseAccountBody = response.body().as(ResponseAccountSuccess.class);
         System.out.println("UserID: " + responseAccountBody.getId());
         System.out.println("Email: " + responseAccountBody.getEmail());
         System.out.println("Password: " + responseAccountBody.getPassword());
+
+        responseAccountBody.validateNotNullFields();
         Assert.assertEquals(responseAccountBody.getName(), request_User.getName());
+
+
         return responseAccountBody;
     }
 
     public Response_Token_Success generateToken(Request_User request_User) {
         Response response = userServiceImp.generateUserToken(request_User);
+
         Assert.assertEquals(response.getStatusCode(), ResponseStatus.SC_CREATED);
         Response_Token_Success responseTokenSuccess = response.body().as(Response_Token_Success.class);
+
+        responseTokenSuccess.validateNotNullFields();
         Assert.assertEquals(response.getStatusCode(), 201, "Login request failed — expected 201 Created");
         Assert.assertNotNull(responseTokenSuccess.getAccess_token(), "Access token is null!");
         Assert.assertFalse(responseTokenSuccess.getAccess_token().isEmpty(), "Access token is empty!");
         Assert.assertNotNull(responseTokenSuccess.getRefresh_token(), "Refresh token is null!");
+
         return responseTokenSuccess;
     }
 

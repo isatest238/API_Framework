@@ -1,8 +1,13 @@
 package ObjectData.ResponseObject;
 
+import ObjectData.ResponseNotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import org.testng.Assert;
 
-public class Response_Token_Success {
+@Getter
+
+public class Response_Token_Success implements ResponseNotNull {
 
     @JsonProperty ("access_token")
     private String access_token;
@@ -10,25 +15,10 @@ public class Response_Token_Success {
     @JsonProperty ("refresh_token")
     private String refresh_token;
 
-    @JsonProperty ("status")
-    private String status;
 
-    public String getStatus() {
-        return status;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    @JsonProperty ("result")
-    private String result;
-
-    public String getAccess_token() {
-        return access_token;
-    }
-
-    public String getRefresh_token() {
-        return refresh_token;
+    @Override
+    public void validateNotNullFields() {
+        Assert.assertNotNull(access_token, "Access token is null!");
+        Assert.assertNotNull(refresh_token, "Refresh token is null!");
     }
 }
