@@ -1,12 +1,11 @@
-package ObjectData;
+package ObjectData.ResponseObject;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
 import lombok.Getter;
 import org.testng.Assert;
 
 @Getter
-public class ResponseCategory implements ResponseNotNull{
+public class ResponseCategory implements ResponseNotNull {
 
     @JsonProperty("id")
     private String id;

@@ -2,9 +2,11 @@ package Tests;
 
 import Actions.Account_Actions;
 import Actions.ProductStoreActions;
+import ObjectData.RequestObject.RequestUpdateProduct;
 import ObjectData.RequestObject.Request_Product;
 import ObjectData.RequestObject.Request_User;
 import ObjectData.ResponseObject.ResponseAccountSuccess;
+import ObjectData.ResponseObject.ResponseProductSuccess;
 import ObjectData.ResponseObject.Response_Token_Success;
 import Property_Utility.Property_Utility;
 import extentUtility.ExtentUtility;
@@ -16,11 +18,14 @@ import java.util.HashMap;
 
 public class ProductTest extends Hooks {
     public String userID;
+    public String actualProductId;
+    public String expectedProductId;
     public Request_User requestUserBody;
     public String token;
     public Account_Actions accountActions;
     public Request_Product requestProduct;
     public ProductStoreActions productStoreActions;
+    public RequestUpdateProduct requestUpdateProduct;
 
     @Test
     public void method() {
@@ -39,6 +44,20 @@ public class ProductTest extends Hooks {
 
         System.out.println("\n Step 4: ADD PRODUCT TO ACCOUNT ");
         addProductToAccount();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific product added with success ");
+
+        System.out.println("\n Step 5: UPDATE SPECIFIC PRODUCT");
+        updateSpecProduct();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "SPECIFIC PRODUCT UPDATED WITH SUCCESS");
+
+
+        System.out.println("\n Step 5:DELETE SPECIFIC PRODUCT");
+        deleteProductFromAccount();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "SPECIFIC PRODUCT DELETED WITH SUCCESS");
+
+        System.out.println("\n Step 5: VERIFY SPECIFIC PRODUCT AFTER DELETION");
+        getSpecificProduct();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific user deletion is confirmed with success ");
     }
 
     public void createAccount() {
@@ -68,13 +87,52 @@ public class ProductTest extends Hooks {
     public void addProductToAccount() {
         Property_Utility propertyUtility = new Property_Utility("RequestData/BookProductData");
         HashMap<String, String> testData = propertyUtility.getAllData();
+
         testData.put("userID", userID);
+
         String uniqueTitle = "New Product " + System.currentTimeMillis();
         testData.put("title", uniqueTitle);
 
         requestProduct = new Request_Product(testData);
 
         productStoreActions = new ProductStoreActions();
-        productStoreActions.addProduct(token, requestProduct);
+        ResponseProductSuccess responseProduct = productStoreActions.addProduct(token, requestProduct);
+
+
+        // actual ID from API
+        actualProductId = responseProduct.getId();
+        System.out.println("Created product id: " + actualProductId);
+
+
     }
+
+    public void updateSpecProduct() {
+        Property_Utility propertyUtility = new Property_Utility("RequestData/BookProductData");
+        HashMap<String, String> testData = propertyUtility.getAllData();
+
+        // 🔵 id-ul din body = ce ne asteptam sa fie in produs
+        expectedProductId = actualProductId;
+        testData.put("id", expectedProductId);
+
+        // 🔵 INSTANTIEM BODY-UL PENTRU UPDATE
+        requestUpdateProduct = new RequestUpdateProduct(testData);
+
+        // facem update pe campuri (title, price)
+        requestUpdateProduct.setTitle(requestUpdateProduct.getTitle() + System.currentTimeMillis() + "updatat");
+        requestUpdateProduct.setPrice(requestUpdateProduct.getPrice()  * 2);
+
+        // 🔵 apelam direct update
+        productStoreActions.updateSpecificProduct(requestUpdateProduct, actualProductId);
+    }
+
+    public void deleteProductFromAccount() {
+        productStoreActions.deleteSpecificProduct(actualProductId);
+    }
+
+    public void getSpecificProduct() {
+        productStoreActions.getSpecificProduct(actualProductId);
+    }
+
 }
+
+

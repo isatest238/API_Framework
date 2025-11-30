@@ -1,4 +1,4 @@
-package ObjectData;
+package ObjectData.ResponseObject;
 
 public interface ResponseNotNull {
 

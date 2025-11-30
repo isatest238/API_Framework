@@ -1,5 +1,6 @@
 package Service.InterfaceService;
 
+import ObjectData.RequestObject.RequestUpdateProduct;
 import ObjectData.RequestObject.Request_Product;
 import io.restassured.response.Response;
 
@@ -10,6 +11,7 @@ public interface ProductStoreServiceInterface {
     Response addProduct(Request_Product request_product, String token);
 
     //DE IMPLEMENTAT DATA VIITOARE
-    Response updateSpecificProduct();
+    Response updateSpecificProduct(RequestUpdateProduct body, String actualTitle);
     Response deleteSpecificProduct(String specificID);
+    Response getSpecificProduct(String specificID);
 }

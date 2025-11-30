@@ -1,7 +1,5 @@
 package ObjectData.ResponseObject;
 
-import ObjectData.ResponseCategory;
-import ObjectData.ResponseNotNull;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

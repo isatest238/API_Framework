@@ -7,16 +7,16 @@ import java.util.HashMap;
 import java.util.List;
 
 @Data
-public class Request_Product implements Request_Preparation {
-
+public class RequestUpdateProduct implements Request_Preparation {
+    private String id;
     private String title;
     private Integer price;
     private String description;
     private Integer categoryId;
-    //private List<BookProduct> images;
     private List<String> images;
 
-    public Request_Product(HashMap<String, String> testData) {
+
+    public RequestUpdateProduct(HashMap<String, String> testData) {
         prepareObject(testData);
     }
 
@@ -24,6 +24,9 @@ public class Request_Product implements Request_Preparation {
     public void prepareObject(HashMap<String, String> testData) {
         for (String key : testData.keySet()) {
             switch (key) {
+                case "id":
+                    setId(testData.get(key));
+                    break;
                 case "title":
                     setTitle(testData.get(key));
                     break;
@@ -44,7 +47,7 @@ public class Request_Product implements Request_Preparation {
 
     }
 
-    //trebuie sa parsam valoarea pentru carti intr o lista de obiecte (BookProduct)
+    //trebuie sa parsam valoarea pentru produse intr o lista de obiecte (BookProduct)
     private void prepareProducts(String value) {
         images = new ArrayList<>();
         String[] products = value.split(",");

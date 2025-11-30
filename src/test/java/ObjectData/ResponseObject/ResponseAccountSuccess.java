@@ -1,6 +1,5 @@
 package ObjectData.ResponseObject;
 
-import ObjectData.ResponseNotNull;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import org.testng.Assert;
@@ -33,4 +32,6 @@ public class ResponseAccountSuccess implements ResponseNotNull {
         Assert.assertNotNull(creationAt);
         Assert.assertNotNull(updatedAt);
     }
+
+
 }
