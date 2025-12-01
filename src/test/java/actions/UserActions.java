@@ -68,7 +68,13 @@ public class UserActions {
 
        }
 
-    public void deleteSpecificAccount(String userID) {
+       public void getListOfUsers(String limit) {
+        Response response = userServiceImp.getListOfUsers(limit);
+        Assert.assertEquals(response.getStatusCode(), ResponseStatus.SC_OK);
+       }
+
+
+        public void deleteSpecificAccount(String userID) {
         Response response = userServiceImp.deleteSpecificAccount(userID);
         Assert.assertEquals(response.getStatusCode(), ResponseStatus.SC_OK);
 

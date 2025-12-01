@@ -45,10 +45,10 @@ public class CommonAPIService {
         return response;
     }
 
-    public Response get(String userID, String endPoint) {
+    public Response get(String token, String endPoint) {
         RequestSpecification requestSpecification = RestAssured.given();
         // pentru acest tip de metoda o sa facem un get fara body - dar aici ne trebuie header
-        requestSpecification.header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_TYPE + userID);
+        requestSpecification.header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_TYPE + token);
         ServiceHelper.requestLogs(requestSpecification, endPoint, RequestType.REQUEST_GET);
 
         Response response = performRequest(RequestType.REQUEST_GET, requestSpecification, endPoint);
@@ -56,9 +56,9 @@ public class CommonAPIService {
         return response;
     }
 
-    public Response delete(String userID, String endPoint) {
+    public Response delete(String token, String endPoint) {
         RequestSpecification requestSpecification = RestAssured.given();
-        requestSpecification.header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_TYPE + userID);
+        requestSpecification.header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_TYPE + token);
         ServiceHelper.requestLogs(requestSpecification, endPoint, RequestType.REQUEST_DELETE);
 
         Response response = performRequest(RequestType.REQUEST_DELETE, requestSpecification, endPoint);

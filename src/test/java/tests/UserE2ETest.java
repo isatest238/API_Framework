@@ -10,14 +10,23 @@ import extentUtility.ReportStep;
 import hooks.Hooks;
 import org.testng.annotations.Test;
 
-public class Create_User_Test extends Hooks {
+import java.util.HashMap;
+
+public class UserE2ETest extends Hooks {
     public String userID;
     public Request_User requestUserBody;
     public String token;
+    UserActions userActions = new UserActions();
     public UserActions accountActions;
 
     @Test
     public void verifyUserEndToEnd() {
+
+        System.out.println("Step 1: GET LIST OF USERS WITH LIMIT");
+        getListOfUsers();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "New account created with success ");
+
+
         System.out.println("Step 1: CREATE NEW USER");
         createAccount();
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "New account created with success ");
@@ -37,6 +46,16 @@ public class Create_User_Test extends Hooks {
         System.out.println("\n Step 5: VERIFY SPECIFIC USER AFTER DELETION");
         getSpecificUser();
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific user deletion is confirmed with success ");
+    }
+
+
+    public void getListOfUsers() {
+        propertyUtility = new PropertyUtility("RequestData/CreateUserData");
+        HashMap<String, String> data = propertyUtility.getAllData();
+
+        int limit = Integer.parseInt(data.get("limit"));
+        userActions.getListOfUsers(String.valueOf(limit));
+
     }
 
     public void createAccount() {

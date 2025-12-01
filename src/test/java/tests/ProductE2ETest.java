@@ -1,13 +1,9 @@
 package tests;
 
-import actions.UserActions;
 import actions.ProductStoreActions;
 import objectData.requestObject.RequestUpdateProduct;
 import objectData.requestObject.Request_Product;
-import objectData.requestObject.Request_User;
-import objectData.responseObject.ResponseAccountSuccess;
 import objectData.responseObject.ResponseProductSuccess;
-import objectData.responseObject.ResponseTokenSuccess;
 import propertyUtility.PropertyUtility;
 import extentUtility.ExtentUtility;
 import extentUtility.ReportStep;
@@ -16,34 +12,34 @@ import org.testng.annotations.Test;
 
 import java.util.HashMap;
 
-public class ProductTest extends Hooks {
+public class ProductE2ETest extends Hooks {
     public String userID;
     public String actualProductId;
     public String expectedProductId;
-    public Request_User requestUserBody;
-    public String token;
-    public UserActions accountActions;
     public Request_Product requestProduct;
-    public ProductStoreActions productStoreActions;
     public RequestUpdateProduct requestUpdateProduct;
+    public Integer limit;
+    public Integer offset;
+    public ProductStoreActions productStoreActions =  new ProductStoreActions();
 
     @Test
     public void verifyProductEndToEnd() {
-        System.out.println("Step 1: CREATE NEW USER");
-        createAccount();
-        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "New account created with success ");
 
-        System.out.println("\n Step 2: GENERATE NEW TOKEN ");
-        generateToken();
-        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Token generated with success ");
+        System.out.println("\n Step 1: GET PRODUCT LIST USING WITH LIMIT ");
+        getProductList();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "LIST OF PRODUCTS DISPLAYED WITH SUCCESS");
 
-        System.out.println("\n Step 3: GET SPECIFIC USER ");
-        getSpecificUser();
-        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific user validated with success ");
+        System.out.println("\n Step 2: CREATE NEW PRODUCT");
+        createProduct();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "SPECIFIC PRODUCT CREATED WITH SUCCESS");
 
-        System.out.println("\n Step 4: ADD PRODUCT TO ACCOUNT ");
-        addProductToAccount();
-        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific product added with success ");
+        System.out.println("\n Step 3: GET SPECIFIC PRODUCT BY ID");
+        getSpecificProductById();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "SPECIFIC PRODUCT LISTED WITH SUCCESS");
+
+        System.out.println("\n Step 4: GET RELATED PRODUCT");
+        getRelatedProductById();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "RELATED PRODUCT LISTED WITH SUCCESS");
 
         System.out.println("\n Step 5: UPDATE SPECIFIC PRODUCT");
         updateSpecProduct();
@@ -54,36 +50,22 @@ public class ProductTest extends Hooks {
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "SPECIFIC PRODUCT DELETED WITH SUCCESS");
 
         System.out.println("\n Step 7: VERIFY SPECIFIC PRODUCT AFTER DELETION");
-        getDeletedProduct();
-        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific product deletion is confirmed with success ");
+        checkIfProductDeleted();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "SPECIFIC PRODUCT DELETION IS CONFIRMED WITH SUCCESS");
     }
 
-    public void createAccount() {
-        // instantam clasa de Actions
-        accountActions = new UserActions();
+    public void getProductList(){
+        propertyUtility = new PropertyUtility("RequestData/CreateProductData");
+        HashMap<String, String> data = propertyUtility.getAllData();
 
-        // 41 , 42 pregateste body ul
-        propertyUtility = new PropertyUtility("RequestData/CreateUserData");
-        requestUserBody = new Request_User(propertyUtility.getAllData());
+        int limit = Integer.parseInt(data.get("limit"));
+        int offset = Integer.parseInt(data.get("offset"));
 
-        // 45 - chemam layer3 de account action care trigger pe cea de jos
-        // - face actiunea de post si returneaza rez in response account success - si extrage user ID
-        ResponseAccountSuccess responseAccountBody = accountActions.createNewAccount(requestUserBody);
-        userID = responseAccountBody.getId().toString();
+        productStoreActions.getProductsWithLimit(limit, offset);
     }
 
-    public void generateToken() {
-        ResponseTokenSuccess responseTokenSuccess = accountActions.generateToken(requestUserBody);
-        System.out.println("Access Token:" + responseTokenSuccess.getAccess_token());
-        token = responseTokenSuccess.getAccess_token();
-    }
-
-    public void getSpecificUser() {
-        accountActions.getSpecificAccount(userID, requestUserBody);
-    }
-
-    public void addProductToAccount() {
-        propertyUtility = new PropertyUtility("RequestData/BookProductData");
+    public void createProduct() {
+        propertyUtility = new PropertyUtility("RequestData/CreateProductData");
         HashMap<String, String> testData = propertyUtility.getAllData();
 
         testData.put("userID", userID);
@@ -101,8 +83,16 @@ public class ProductTest extends Hooks {
         System.out.println("Created product id: " + actualProductId);
     }
 
+    public void getSpecificProductById(){
+        productStoreActions.getSpecificProduct(actualProductId);
+    }
+
+    public void getRelatedProductById(){
+        productStoreActions.getRelatedProduct(actualProductId);
+    }
+
     public void updateSpecProduct() {
-        propertyUtility = new PropertyUtility("RequestData/BookProductData");
+        propertyUtility = new PropertyUtility("RequestData/CreateProductData");
         HashMap<String, String> testData = propertyUtility.getAllData();
 
         // 🔵 id-ul din body = ce ne asteptam sa fie in produs
@@ -124,9 +114,11 @@ public class ProductTest extends Hooks {
         productStoreActions.deleteSpecificProduct(actualProductId);
     }
 
-    public void getDeletedProduct() {
-        productStoreActions.getSpecificProduct(actualProductId);
+    public void checkIfProductDeleted() {
+        productStoreActions.verifyProductDeleted(actualProductId);
     }
+
+
 }
 
 

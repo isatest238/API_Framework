@@ -18,7 +18,7 @@ public class ResponseProductSuccess implements ResponseNotNull {
     @JsonProperty("slug")
     private String slug;
     @JsonProperty("price")
-    private String price;
+    private Integer price;
     @JsonProperty("description")
     private String description;
     @JsonProperty("category")

@@ -11,7 +11,9 @@ public interface ProductStoreServiceInterface {
     Response addProduct(Request_Product request_product);
 
 
-    Response updateSpecificProduct(RequestUpdateProduct body, String actualTitle);
+    Response updateSpecificProduct(RequestUpdateProduct body, String productID);
     Response deleteSpecificProduct(String specificID);
     Response getSpecificProduct(String specificID);
+    Response getProductList(int limit, int offset );
+    Response getRelatedProduct(String productID);
 }

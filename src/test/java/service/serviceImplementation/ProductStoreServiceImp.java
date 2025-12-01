@@ -22,7 +22,6 @@ public class ProductStoreServiceImp implements ProductStoreServiceInterface {
         return productStoreAPIService.post(body, ProductEndPoints.PRODUCT_ADD);
     }
 
-
     @Override
     public Response updateSpecificProduct(RequestUpdateProduct body, String actualID) {
         String url = ProductEndPoints.PRODUCT_UPDATE + actualID;
@@ -30,14 +29,26 @@ public class ProductStoreServiceImp implements ProductStoreServiceInterface {
     }
 
     @Override
-    public Response getSpecificProduct(String actualID) {
-        String url = ProductEndPoints.PRODUCT_GET + actualID;
-        return productStoreAPIService.get(actualID, url);
+    public Response getSpecificProduct(String productId) {
+        String url = ProductEndPoints.PRODUCT_GET + productId;
+        return productStoreAPIService.get(null, url);
     }
 
     @Override
-    public Response deleteSpecificProduct(String specificID) {
-        String url = ProductEndPoints.PRODUCT_DELETE + specificID;
-        return productStoreAPIService.delete(specificID, url);
+    public Response getRelatedProduct(String productId){
+        String url = ProductEndPoints.PRODUCT_GET + productId + "/related";
+        return productStoreAPIService.get(null, url);
+    }
+
+    @Override
+    public Response getProductList(int limit, int offset) {
+        String url = ProductEndPoints.PRODUCT_GET_LIST + "?limit=" + limit + "&offset=" + offset;
+        return productStoreAPIService.get(null, url);
+    }
+
+    @Override
+    public Response deleteSpecificProduct(String productId) {
+        String url = ProductEndPoints.PRODUCT_DELETE + productId;
+        return productStoreAPIService.delete(productId, url);
     }
 }
