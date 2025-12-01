@@ -12,7 +12,7 @@
         </Logger>
 
         <!-- opțional: vrei loguri și din ServiceHelper -->
-        <Logger name="Service" level="info" additivity="false">
+        <Logger name="service" level="info" additivity="false">
             <AppenderRef ref="LogToConsole"/>
         </Logger>
 
