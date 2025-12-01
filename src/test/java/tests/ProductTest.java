@@ -1,6 +1,6 @@
 package tests;
 
-import actions.User_Actions;
+import actions.UserActions;
 import actions.ProductStoreActions;
 import objectData.requestObject.RequestUpdateProduct;
 import objectData.requestObject.Request_Product;
@@ -22,13 +22,13 @@ public class ProductTest extends Hooks {
     public String expectedProductId;
     public Request_User requestUserBody;
     public String token;
-    public User_Actions accountActions;
+    public UserActions accountActions;
     public Request_Product requestProduct;
     public ProductStoreActions productStoreActions;
     public RequestUpdateProduct requestUpdateProduct;
 
     @Test
-    public void method() {
+    public void verifyProductEndToEnd() {
         System.out.println("Step 1: CREATE NEW USER");
         createAccount();
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "New account created with success ");
@@ -54,13 +54,13 @@ public class ProductTest extends Hooks {
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "SPECIFIC PRODUCT DELETED WITH SUCCESS");
 
         System.out.println("\n Step 7: VERIFY SPECIFIC PRODUCT AFTER DELETION");
-        getSpecificProduct();
+        getDeletedProduct();
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific product deletion is confirmed with success ");
     }
 
     public void createAccount() {
         // instantam clasa de Actions
-        accountActions = new User_Actions();
+        accountActions = new UserActions();
 
         // 41 , 42 pregateste body ul
         propertyUtility = new PropertyUtility("RequestData/CreateUserData");
@@ -94,7 +94,7 @@ public class ProductTest extends Hooks {
         requestProduct = new Request_Product(testData);
 
         productStoreActions = new ProductStoreActions();
-        ResponseProductSuccess responseProduct = productStoreActions.addProduct(token, requestProduct);
+        ResponseProductSuccess responseProduct = productStoreActions.addProduct(requestProduct);
 
         // actual ID from API
         actualProductId = responseProduct.getId();
@@ -124,10 +124,9 @@ public class ProductTest extends Hooks {
         productStoreActions.deleteSpecificProduct(actualProductId);
     }
 
-    public void getSpecificProduct() {
+    public void getDeletedProduct() {
         productStoreActions.getSpecificProduct(actualProductId);
     }
-
 }
 
 

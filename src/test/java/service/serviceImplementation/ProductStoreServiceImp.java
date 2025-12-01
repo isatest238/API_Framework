@@ -2,7 +2,9 @@ package service.serviceImplementation;
 
 import objectData.requestObject.RequestUpdateProduct;
 import objectData.requestObject.Request_Product;
+import objectData.requestObject.Request_User;
 import service.apiService.ProductStoreAPIService;
+import service.endpoints.UserEndPoints;
 import service.interfaceService.ProductStoreServiceInterface;
 import service.endpoints.ProductEndPoints;
 import io.restassured.response.Response;
@@ -16,8 +18,8 @@ public class ProductStoreServiceImp implements ProductStoreServiceInterface {
     }
 
     @Override
-    public Response addProduct(Request_Product body, String token) {
-        return productStoreAPIService.post(body, ProductEndPoints.PRODUCT_ADD, token);
+    public Response addProduct(Request_Product body) {
+        return productStoreAPIService.post(body, ProductEndPoints.PRODUCT_ADD);
     }
 
 

@@ -1,6 +1,6 @@
 package tests;
 
-import actions.User_Actions;
+import actions.UserActions;
 import objectData.requestObject.Request_User;
 import objectData.responseObject.ResponseAccountSuccess;
 import objectData.responseObject.ResponseTokenSuccess;
@@ -14,10 +14,10 @@ public class Create_User_Test extends Hooks {
     public String userID;
     public Request_User requestUserBody;
     public String token;
-    public User_Actions accountActions;
+    public UserActions accountActions;
 
     @Test
-    public void testMethod() {
+    public void verifyUserEndToEnd() {
         System.out.println("Step 1: CREATE NEW USER");
         createAccount();
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "New account created with success ");
@@ -41,7 +41,7 @@ public class Create_User_Test extends Hooks {
 
     public void createAccount() {
         // instantam clasa de Actions
-        accountActions = new User_Actions();
+        accountActions = new UserActions();
 
         // 41 , 42 pregateste body ul
         propertyUtility = new PropertyUtility("RequestData/CreateUserData");
@@ -66,7 +66,5 @@ public class Create_User_Test extends Hooks {
     public void deleteSpecificUser() {
         accountActions.deleteSpecificAccount(userID);
     }
-
-
 }
 

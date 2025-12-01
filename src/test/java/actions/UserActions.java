@@ -9,11 +9,11 @@ import service.serviceImplementation.UserServiceImp;
 import io.restassured.response.Response;
 import org.testng.Assert;
 
-public class User_Actions {
+public class UserActions {
 
     private final UserServiceImp userServiceImp;
 
-    public User_Actions() {
+    public UserActions() {
         userServiceImp = new UserServiceImp();
     }
 

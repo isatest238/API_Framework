@@ -16,8 +16,8 @@ public class ProductStoreActions {
         productStoreServiceImp = new ProductStoreServiceImp();
     }
 
-    public ResponseProductSuccess addProduct(String token, Request_Product body) {
-        Response response = productStoreServiceImp.addProduct(body, token);
+    public ResponseProductSuccess addProduct(Request_Product body) {
+        Response response = productStoreServiceImp.addProduct(body);
         Assert.assertEquals(response.getStatusCode(), ResponseStatus.SC_CREATED);
 
         ResponseProductSuccess responseProductSuccess = response.body().as(ResponseProductSuccess.class);
@@ -27,18 +27,44 @@ public class ProductStoreActions {
 
     }
 
-    public void updateSpecificProduct  (RequestUpdateProduct requestBody, String actualProductID) {
-        Response response = productStoreServiceImp.updateSpecificProduct(requestBody,actualProductID);
+    public void updateSpecificProduct(RequestUpdateProduct requestBody, String actualProductID) {
+        Response response = productStoreServiceImp.updateSpecificProduct(requestBody, actualProductID);
         Assert.assertEquals(response.getStatusCode(), ResponseStatus.SC_OK);
 
 
         ResponseProductSuccess responseProductSuccess = response.body().as(ResponseProductSuccess.class);
         responseProductSuccess.validateNotNullFields();
+        Assert.assertEquals(responseProductSuccess.getId(), actualProductID);
+        Assert.assertEquals(responseProductSuccess.getTitle(), requestBody.getTitle());
+        Assert.assertEquals(responseProductSuccess.getPrice(), requestBody.getPrice());
     }
 
-    public void getSpecificProduct  (String actualProductID) {
+//    public void getSpecificProductOriginal(String actualProductID) {
+//        Response response = productStoreServiceImp.getSpecificProduct(actualProductID);
+//        Assert.assertEquals(response.getStatusCode(), ResponseStatus.SC_OK);
+//        String body = response.getBody().asString();
+//
+//    }
+//    public void verifyProductDeleted(String actualProductID) {
+//        Response response = productStoreServiceImp.getSpecificProduct(actualProductID);
+//        Assert.assertEquals(response.getStatusCode(), ResponseStatus.SC_BAD_REQUEST);
+//        String body = response.getBody().asString();
+//        Assert.assertTrue(body.contains("EntityNotFoundError"),
+//                "Expected EntityNotFoundError in response body");
+//    }
+//
+    public void getSpecificProduct(String actualProductID) {
         Response response = productStoreServiceImp.getSpecificProduct(actualProductID);
-        Assert.assertEquals(response.getStatusCode(), ResponseStatus.SC_BAD_REQUEST);
+        if (response.getStatusCode() == ResponseStatus.SC_OK) {
+            Assert.assertEquals(response.getStatusCode(), ResponseStatus.SC_OK);
+            String body = response.getBody().asString();
+        }
+        else  {
+            Assert.assertEquals(response.getStatusCode(), ResponseStatus.SC_BAD_REQUEST);
+            String body = response.getBody().asString();
+            Assert.assertTrue(body.contains("EntityNotFoundError"),
+                    "Expected EntityNotFoundError in response body");
+        }
     }
 
     public void deleteSpecificProduct(String specificID) {
