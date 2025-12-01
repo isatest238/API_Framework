@@ -51,11 +51,11 @@ public class ProductTest extends Hooks {
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "SPECIFIC PRODUCT UPDATED WITH SUCCESS");
 
 
-        System.out.println("\n Step 5:DELETE SPECIFIC PRODUCT");
+        System.out.println("\n Step 6:DELETE SPECIFIC PRODUCT");
         deleteProductFromAccount();
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "SPECIFIC PRODUCT DELETED WITH SUCCESS");
 
-        System.out.println("\n Step 5: VERIFY SPECIFIC PRODUCT AFTER DELETION");
+        System.out.println("\n Step 7: VERIFY SPECIFIC PRODUCT AFTER DELETION");
         getSpecificProduct();
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific user deletion is confirmed with success ");
     }
