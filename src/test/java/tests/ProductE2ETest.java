@@ -118,7 +118,6 @@ public class ProductE2ETest extends Hooks {
         productStoreActions.verifyProductDeleted(actualProductId);
     }
 
-
 }
 
 

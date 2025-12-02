@@ -1,10 +1,8 @@
 package tests;
 
 import actions.UserActions;
-import objectData.requestObject.RequestUpdateProduct;
 import objectData.requestObject.Request_User;
 import objectData.responseObject.ResponseAccountSuccess;
-import objectData.responseObject.ResponseTokenSuccess;
 import propertyUtility.PropertyUtility;
 import extentUtility.ExtentUtility;
 import extentUtility.ReportStep;
@@ -35,16 +33,11 @@ public class UserE2ETest extends Hooks {
         getSpecificUser();
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific user validated with success ");
 
-
         System.out.println("\n Step 4: UPDATE SPECIFIC USER ");
         updateSpecificUser();
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific user updated with success ");
 
 
-//        System.out.println("\n Step 4: GENERATE NEW TOKEN ");
-//        generateToken();
-//        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Token generated with success ");
-//
         System.out.println("\n Step 5: DELETE SPECIFIC USER ");
         deleteSpecificUser();
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific user deleted");
@@ -75,12 +68,6 @@ public class UserE2ETest extends Hooks {
         userID = responseAccountBody.getId().toString();
     }
 
-    public void generateToken() {
-        ResponseTokenSuccess responseTokenSuccess = userActions.generateToken(requestUserBody);
-        System.out.println("Access Token:" + responseTokenSuccess.getAccess_token());
-        token = responseTokenSuccess.getAccess_token();
-    }
-
     public void getSpecificUser() {
         userActions.getSpecificAccount(userID, requestUserBody);
     }
@@ -90,13 +77,12 @@ public class UserE2ETest extends Hooks {
     }
 
     public void updateSpecificUser() {
-        // 1. Create user
+
         propertyUtility = new PropertyUtility("RequestData/CreateUserData");
         requestUserBody = new Request_User(propertyUtility.getAllData());
 
         ResponseAccountSuccess createdUser = userActions.createNewAccount(requestUserBody);
         String userId = createdUser.getId();
-
 
         requestUserBody.setName(requestUserBody.getName() + System.currentTimeMillis() + "updatat");
         userActions.updateSpecificUser(userId, requestUserBody);

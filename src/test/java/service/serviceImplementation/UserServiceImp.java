@@ -1,9 +1,8 @@
 package service.serviceImplementation;
 
-import objectData.requestObject.RequestUpdateProduct;
+import objectData.requestObject.RequestRefreshToken;
 import objectData.requestObject.Request_User;
 import service.apiService.UserAPIService;
-import service.endpoints.ProductEndPoints;
 import service.interfaceService.UserServiceInterface;
 import service.endpoints.UserEndPoints;
 import io.restassured.response.Response;
@@ -53,6 +52,18 @@ public class UserServiceImp implements UserServiceInterface {
         String url = UserEndPoints.USER_DELETE + userID;
         return userApiService.deleteWithoutToken(url);
 
+    }
+
+    @Override
+    public Response retrieveUserProfile (String token){
+        String url = UserEndPoints.USER_PROFILE;
+        return userApiService.get(token, url);
+    }
+
+    @Override
+    public Response refreshToken (RequestRefreshToken requestRefreshToken){
+        String url = UserEndPoints.USER_REFRESH_TOKEN;
+        return userApiService.post(requestRefreshToken, url);
     }
 
  }
