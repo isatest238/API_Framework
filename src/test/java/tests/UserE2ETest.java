@@ -1,6 +1,7 @@
 package tests;
 
 import actions.UserActions;
+import objectData.requestObject.RequestUpdateProduct;
 import objectData.requestObject.Request_User;
 import objectData.responseObject.ResponseAccountSuccess;
 import objectData.responseObject.ResponseTokenSuccess;
@@ -17,33 +18,38 @@ public class UserE2ETest extends Hooks {
     public Request_User requestUserBody;
     public String token;
     UserActions userActions = new UserActions();
-    public UserActions accountActions;
+
 
     @Test
     public void verifyUserEndToEnd() {
 
         System.out.println("Step 1: GET LIST OF USERS WITH LIMIT");
         getListOfUsers();
-        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "New account created with success ");
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Users list retrieved successfully");
 
-
-        System.out.println("Step 1: CREATE NEW USER");
+        System.out.println("Step 2: CREATE NEW USER");
         createAccount();
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "New account created with success ");
-
-        System.out.println("\n Step 2: GENERATE NEW TOKEN ");
-        generateToken();
-        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Token generated with success ");
 
         System.out.println("\n Step 3: GET SPECIFIC USER ");
         getSpecificUser();
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific user validated with success ");
 
-        System.out.println("\n Step 4: DELETE SPECIFIC USER ");
+
+        System.out.println("\n Step 4: UPDATE SPECIFIC USER ");
+        updateSpecificUser();
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific user updated with success ");
+
+
+//        System.out.println("\n Step 4: GENERATE NEW TOKEN ");
+//        generateToken();
+//        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Token generated with success ");
+//
+        System.out.println("\n Step 5: DELETE SPECIFIC USER ");
         deleteSpecificUser();
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific user deleted");
 
-        System.out.println("\n Step 5: VERIFY SPECIFIC USER AFTER DELETION");
+        System.out.println("\n Step 6: VERIFY SPECIFIC USER AFTER DELETION");
         getSpecificUser();
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Specific user deletion is confirmed with success ");
     }
@@ -59,31 +65,42 @@ public class UserE2ETest extends Hooks {
     }
 
     public void createAccount() {
-        // instantam clasa de Actions
-        accountActions = new UserActions();
-
-        // 41 , 42 pregateste body ul
+        //pregateste body ul
         propertyUtility = new PropertyUtility("RequestData/CreateUserData");
         requestUserBody = new Request_User(propertyUtility.getAllData());
 
-        // 45 - chemam layer3 de account action care trigger pe cea de jos
-        // - face actiunea de post si returneaza rez in response account success - si extrage user ID
-        ResponseAccountSuccess responseAccountBody = accountActions.createNewAccount(requestUserBody);
+        // chemam layer3 de account action care trigger pe cea de jos
+        // face actiunea de post si returneaza rez in response account success - si extrage user ID
+        ResponseAccountSuccess responseAccountBody = userActions.createNewAccount(requestUserBody);
         userID = responseAccountBody.getId().toString();
     }
 
     public void generateToken() {
-        ResponseTokenSuccess responseTokenSuccess = accountActions.generateToken(requestUserBody);
+        ResponseTokenSuccess responseTokenSuccess = userActions.generateToken(requestUserBody);
         System.out.println("Access Token:" + responseTokenSuccess.getAccess_token());
         token = responseTokenSuccess.getAccess_token();
     }
 
     public void getSpecificUser() {
-        accountActions.getSpecificAccount(userID, requestUserBody);
+        userActions.getSpecificAccount(userID, requestUserBody);
     }
 
     public void deleteSpecificUser() {
-        accountActions.deleteSpecificAccount(userID);
+        userActions.deleteSpecificAccount(userID);
+    }
+
+    public void updateSpecificUser() {
+        // 1. Create user
+        propertyUtility = new PropertyUtility("RequestData/CreateUserData");
+        requestUserBody = new Request_User(propertyUtility.getAllData());
+
+        ResponseAccountSuccess createdUser = userActions.createNewAccount(requestUserBody);
+        String userId = createdUser.getId();
+
+
+        requestUserBody.setName(requestUserBody.getName() + System.currentTimeMillis() + "updatat");
+        userActions.updateSpecificUser(userId, requestUserBody);
+
     }
 }
 

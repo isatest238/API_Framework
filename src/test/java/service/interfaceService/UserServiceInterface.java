@@ -1,5 +1,6 @@
 package service.interfaceService;
 
+import objectData.requestObject.RequestUpdateProduct;
 import objectData.requestObject.Request_User;
 import io.restassured.response.Response;
 
@@ -16,4 +17,5 @@ public interface UserServiceInterface {
     Response deleteSpecificAccount(String userID);
 
     Response getListOfUsers (String limit);
+    Response updateSpecificUser(String actualID, Request_User body);
 }

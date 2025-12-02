@@ -31,6 +31,8 @@ public class ResponseAccountSuccess implements ResponseNotNull {
         Assert.assertNotNull(name);
         Assert.assertNotNull(creationAt);
         Assert.assertNotNull(updatedAt);
+        Assert.assertFalse(email.isEmpty());
+        Assert.assertFalse(name.isEmpty());
     }
 
 

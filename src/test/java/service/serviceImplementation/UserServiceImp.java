@@ -1,5 +1,6 @@
 package service.serviceImplementation;
 
+import objectData.requestObject.RequestUpdateProduct;
 import objectData.requestObject.Request_User;
 import service.apiService.UserAPIService;
 import service.endpoints.ProductEndPoints;
@@ -11,7 +12,7 @@ public class UserServiceImp implements UserServiceInterface {
 
     //facem o instanta de APIService ca sa putem accessa metodele generale: POST, GET, PUT, DELETE ...
 
-    private UserAPIService userApiService;
+    private final UserAPIService userApiService;
 
     public UserServiceImp() {
         userApiService = new UserAPIService();
@@ -26,8 +27,14 @@ public class UserServiceImp implements UserServiceInterface {
     @Override
     public Response getListOfUsers(String limit){
        String url = UserEndPoints.USER_GET + "?limit=" + limit;
-        return userApiService.get(limit,url);
+       return userApiService.get(limit,url);
 
+    }
+
+    @Override
+    public Response updateSpecificUser(String actualID, Request_User body) {
+        String url = UserEndPoints.USER_UPDATE + actualID;
+        return userApiService.put(body, url);
     }
 
     @Override
@@ -38,13 +45,14 @@ public class UserServiceImp implements UserServiceInterface {
     @Override
     public Response getSpecificAccount(String userID) {
         String url = UserEndPoints.USER_GET + userID;
-        return userApiService.get(userID, url);
+        return userApiService.getWithoutToken(url);
     }
 
     @Override
     public Response deleteSpecificAccount(String userID) {
         String url = UserEndPoints.USER_DELETE + userID;
-        return userApiService.delete(userID, url);
+        return userApiService.deleteWithoutToken(url);
 
     }
-}
+
+ }

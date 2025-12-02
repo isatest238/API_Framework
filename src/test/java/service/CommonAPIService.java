@@ -11,9 +11,9 @@ public class CommonAPIService {
     private static final String AUTHORIZATION_HEADER_KEY = "Authorization";
     private static final String AUTHORIZATION_TYPE = "Bearer ";
 
+    // POST fara token
     public Response post(Object body, String endPoint) {
         RequestSpecification requestSpecification = RestAssured.given();
-        // pentru acest tip de metoda o sa facem un POST cu un body
         requestSpecification.body(body);
         ServiceHelper.requestLogs(requestSpecification, endPoint, RequestType.REQUEST_POST);
 
@@ -22,17 +22,7 @@ public class CommonAPIService {
         return response;
     }
 
-    public Response put(Object body, String endPoint) {
-        RequestSpecification requestSpecification = RestAssured.given();
-        // pentru acest tip de metoda o sa facem un PUT cu un body
-        requestSpecification.body(body);
-        ServiceHelper.requestLogs(requestSpecification, endPoint, RequestType.REQUEST_PUT);
-
-        Response response = performRequest(RequestType.REQUEST_PUT, requestSpecification, endPoint);
-        ServiceHelper.responseLogs(response);
-        return response;
-    }
-
+    // POST cu token (/auth/profile )
     public Response post(Object body, String endPoint, String token) {
         RequestSpecification requestSpecification = RestAssured.given();
         // pentru acest tip de metoda o sa facem un POST cu un body
@@ -45,9 +35,21 @@ public class CommonAPIService {
         return response;
     }
 
+    // PUT fara token
+    public Response put(Object body, String endPoint) {
+        RequestSpecification requestSpecification = RestAssured.given();
+        requestSpecification.body(body);
+        ServiceHelper.requestLogs(requestSpecification, endPoint, RequestType.REQUEST_PUT);
+
+        Response response = performRequest(RequestType.REQUEST_PUT, requestSpecification, endPoint);
+        ServiceHelper.responseLogs(response);
+        return response;
+    }
+
+
+    // GET cu token (ex: /api/v1/auth/profile)
     public Response get(String token, String endPoint) {
         RequestSpecification requestSpecification = RestAssured.given();
-        // pentru acest tip de metoda o sa facem un get fara body - dar aici ne trebuie header
         requestSpecification.header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_TYPE + token);
         ServiceHelper.requestLogs(requestSpecification, endPoint, RequestType.REQUEST_GET);
 
@@ -56,9 +58,20 @@ public class CommonAPIService {
         return response;
     }
 
-    public Response delete(String token, String endPoint) {
+    // GET fara token (pentru /api/v1/users, /api/v1/users/{id})
+    public Response getWithoutToken(String endPoint) {
         RequestSpecification requestSpecification = RestAssured.given();
-        requestSpecification.header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_TYPE + token);
+        requestSpecification.header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_TYPE + endPoint);
+        ServiceHelper.requestLogs(requestSpecification, endPoint, RequestType.REQUEST_GET);
+
+        Response response = performRequest(RequestType.REQUEST_GET, requestSpecification, endPoint);
+        ServiceHelper.responseLogs(response);
+        return response;
+    }
+
+    public Response deleteWithoutToken(String endPoint) {
+        RequestSpecification requestSpecification = RestAssured.given();
+        //requestSpecification.header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_TYPE);
         ServiceHelper.requestLogs(requestSpecification, endPoint, RequestType.REQUEST_DELETE);
 
         Response response = performRequest(RequestType.REQUEST_DELETE, requestSpecification, endPoint);

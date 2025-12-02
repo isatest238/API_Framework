@@ -95,18 +95,18 @@ public class ProductE2ETest extends Hooks {
         propertyUtility = new PropertyUtility("RequestData/CreateProductData");
         HashMap<String, String> testData = propertyUtility.getAllData();
 
-        // 🔵 id-ul din body = ce ne asteptam sa fie in produs
+        // id-ul din body = ce ne asteptam sa fie in produs
         expectedProductId = actualProductId;
         testData.put("id", expectedProductId);
 
-        // 🔵 INSTANTIEM BODY-UL PENTRU UPDATE
+        //  INSTANTIEM BODY-UL PENTRU UPDATE
         requestUpdateProduct = new RequestUpdateProduct(testData);
 
         // facem update pe campuri (title, price)
         requestUpdateProduct.setTitle(requestUpdateProduct.getTitle() + System.currentTimeMillis() + "updatat");
         requestUpdateProduct.setPrice(requestUpdateProduct.getPrice() * 2);
 
-        // 🔵 apelam direct update
+        // apelam direct update
         productStoreActions.updateSpecificProduct(requestUpdateProduct, actualProductId);
     }
 

@@ -49,6 +49,6 @@ public class ProductStoreServiceImp implements ProductStoreServiceInterface {
     @Override
     public Response deleteSpecificProduct(String productId) {
         String url = ProductEndPoints.PRODUCT_DELETE + productId;
-        return productStoreAPIService.delete(productId, url);
+        return productStoreAPIService.deleteWithoutToken(url);
     }
 }

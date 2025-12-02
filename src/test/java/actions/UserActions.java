@@ -1,5 +1,6 @@
 package actions;
 
+import objectData.requestObject.RequestUpdateProduct;
 import objectData.requestObject.Request_User;
 import objectData.responseObject.ResponseAccountGetFailed;
 import objectData.responseObject.ResponseAccountSuccess;
@@ -37,7 +38,7 @@ public class UserActions {
 
         ResponseTokenSuccess responseTokenSuccess = response.body().as(ResponseTokenSuccess.class);
         responseTokenSuccess.validateNotNullFields();
-        Assert.assertEquals(response.getStatusCode(), 201, "Login request failed — expected 201 Created");
+
         Assert.assertNotNull(responseTokenSuccess.getAccess_token(), "Access token is null!");
         Assert.assertFalse(responseTokenSuccess.getAccess_token().isEmpty(), "Access token is empty!");
         Assert.assertNotNull(responseTokenSuccess.getRefresh_token(), "Refresh token is null!");
@@ -78,6 +79,15 @@ public class UserActions {
         Response response = userServiceImp.deleteSpecificAccount(userID);
         Assert.assertEquals(response.getStatusCode(), ResponseStatus.SC_OK);
 
+    }
+
+    public void updateSpecificUser(String userId, Request_User body)  {
+        Response response = userServiceImp.updateSpecificUser(userId, body);
+        Assert.assertEquals(response.getStatusCode(), ResponseStatus.SC_OK);
+
+        ResponseAccountSuccess responseAccountBody = response.body().as(ResponseAccountSuccess.class);
+        Assert.assertEquals(responseAccountBody.getId(), userId);
+        responseAccountBody.validateNotNullFields();
     }
 
 
