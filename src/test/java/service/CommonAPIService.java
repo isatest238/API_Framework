@@ -61,7 +61,7 @@ public class CommonAPIService {
     // GET fara token (pentru /api/v1/users, /api/v1/users/{id})
     public Response getWithoutToken(String endPoint) {
         RequestSpecification requestSpecification = RestAssured.given();
-        requestSpecification.header(AUTHORIZATION_HEADER_KEY, AUTHORIZATION_TYPE + endPoint);
+
         ServiceHelper.requestLogs(requestSpecification, endPoint, RequestType.REQUEST_GET);
 
         Response response = performRequest(RequestType.REQUEST_GET, requestSpecification, endPoint);

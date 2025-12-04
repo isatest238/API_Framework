@@ -26,7 +26,7 @@ public class UserServiceImp implements UserServiceInterface {
     @Override
     public Response getListOfUsers(String limit){
        String url = UserEndPoints.USER_GET + "?limit=" + limit;
-       return userApiService.get(limit,url);
+       return userApiService.getWithoutToken(url);
 
     }
 

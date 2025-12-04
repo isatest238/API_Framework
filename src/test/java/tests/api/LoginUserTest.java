@@ -1,4 +1,4 @@
-package tests;
+package tests.api;
 
 import actions.UserActions;
 import extentUtility.ExtentUtility;
@@ -17,7 +17,6 @@ public class LoginUserTest extends Hooks {
     public String userID;
     public Request_User requestUserBody;
     public RequestRefreshToken requestRefreshToken;
-    public String token;
     UserActions userActions = new UserActions();
     public String accessToken;
     public String refreshToken;
@@ -69,7 +68,6 @@ public class LoginUserTest extends Hooks {
                 userActions.generateToken(requestUserBody);
 
         System.out.println("Access Token: " + responseTokenSuccess.getAccess_token());
-        token = responseTokenSuccess.getAccess_token();
 
         accessToken = responseTokenSuccess.getAccess_token();
         refreshToken = responseTokenSuccess.getRefresh_token();
@@ -88,10 +86,8 @@ public class LoginUserTest extends Hooks {
     public void refreshToken() {
         // INITIALIZEZI requestRefreshToken
         requestRefreshToken = new RequestRefreshToken(refreshToken);
-        requestRefreshToken.setRefreshToken(refreshToken);
 
-        ResponseTokenSuccess responseTokenSuccess =
-                userActions.refreshToken(requestRefreshToken);
+        ResponseTokenSuccess responseTokenSuccess =userActions.refreshToken(requestRefreshToken);
 
         System.out.println("New Access Token: " + responseTokenSuccess.getAccess_token());
     }

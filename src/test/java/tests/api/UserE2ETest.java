@@ -1,4 +1,4 @@
-package tests;
+package tests.api;
 
 import actions.UserActions;
 import objectData.requestObject.Request_User;

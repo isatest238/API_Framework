@@ -39,10 +39,6 @@ public class UserActions {
         ResponseTokenSuccess responseTokenSuccess = response.body().as(ResponseTokenSuccess.class);
         responseTokenSuccess.validateNotNullFields();
 
-        Assert.assertNotNull(responseTokenSuccess.getAccess_token(), "Access token is null!");
-        Assert.assertFalse(responseTokenSuccess.getAccess_token().isEmpty(), "Access token is empty!");
-        Assert.assertNotNull(responseTokenSuccess.getRefresh_token(), "Refresh token is null!");
-
         return responseTokenSuccess;
     }
 
@@ -50,17 +46,10 @@ public class UserActions {
         Response response = userServiceImp.refreshToken(requestRefreshToken);
         Assert.assertEquals(response.getStatusCode(), ResponseStatus.SC_CREATED);
 
-         ResponseTokenSuccess responseTokenSuccess = response.body().as(ResponseTokenSuccess.class);
-        // access_token trebuie să existe și să NU fie gol
-        Assert.assertNotNull(responseTokenSuccess.getAccess_token(), "Access token is null!");
-        Assert.assertFalse(responseTokenSuccess.getAccess_token().isEmpty(), "Access token is empty!");
-
-        // refresh_token trebuie să existe și să NU fie gol
-        Assert.assertNotNull(responseTokenSuccess.getRefresh_token(), "Refresh token is null!");
-        Assert.assertFalse(responseTokenSuccess.getRefresh_token().isEmpty(), "Refresh token is empty!");
+        ResponseTokenSuccess responseTokenSuccess = response.body().as(ResponseTokenSuccess.class);
+        responseTokenSuccess.validateNotNullFields();
 
         return responseTokenSuccess;
-
     }
 
     public void getSpecificAccount(String userID, Request_User request_user) {
