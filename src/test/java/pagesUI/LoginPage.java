@@ -1,29 +1,50 @@
 package pagesUI;
 
-import org.openqa.selenium.By;
+import baseUI.BasePage;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage {
+public class LoginPage extends BasePage {
 
-    private final WebDriver driver;
+    // locators - WebElements
+    @FindBy(id = "user-name")
+    public WebElement usernameInput;
 
-    // constructor corect – primeste driver din test
+    @FindBy(id = "password")
+    public WebElement passwordInput;
+
+    @FindBy(id = "login-button")
+    public WebElement loginButton;
+
+    // constructor
     public LoginPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
+        PageFactory.initElements(driver, this);
     }
 
+    // actiuni pe care le facem pe LoginPage
     public void open() {
         driver.get("https://www.saucedemo.com/");
     }
 
-    // locators + metode
-    private final By usernameInput = By.id("user-name");
-    private final By passwordInput = By.id("password");
-    private final By loginButton = By.id("login-button");
+    public void typeUsername(String username) {
+        type(usernameInput, username);
+    }
 
-    public void login(String username, String password) {
-        driver.findElement(usernameInput).sendKeys(username);
-        driver.findElement(passwordInput).sendKeys(password);
-        driver.findElement(loginButton).click();
+    public void typePassword(String password) {
+        type(passwordInput, password);
+    }
+
+    public void clickLoginButton() {
+        click(loginButton);
+    }
+
+
+    public void loginWithValidCredentials(String username, String password) {
+        typeUsername(username);
+        typePassword(password);
+        clickLoginButton();
     }
 }
