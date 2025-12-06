@@ -2,6 +2,7 @@ package tests.ui;
 
 import extentUtility.ExtentUtility;
 import extentUtility.ReportStep;
+import loggerUtility.LoggerUtility;
 import pagesUI.ProductsPage;
 import propertyUtility.PropertyUtility;
 import org.testng.Assert;
@@ -27,30 +28,26 @@ public class LoginWithValidCredentials extends SharedDataUI {
 
     @Test
     public void verifyLoginWithValidCredentials() {
-        System.out.println("Step 1: Login with valid credentials");
+        ExtentUtility.attachReportLog(ReportStep.INFO_STEP, "Start test: Login with valid credentials");
 
-        ExtentUtility.attachReportLog(ReportStep.INFO_STEP, "Login with valid credentials");
-        HashMap<String, String> testData = getLoginData();
-        String username = testData.get("username");
-        String password = testData.get("password");
+        //1. Login
+        loginStandardUser();
+        ExtentUtility.attachReportLog(ReportStep.INFO_STEP, "User logged in successfully");
+        LoggerUtility.infoTest("User logged in successfully");
 
-        LoginPage loginPage = openLoginPage();
-        ExtentUtility.attachReportLog(ReportStep.INFO_STEP, "Opened Login Page");
-
-        loginPage.loginWithCredentials(username, password);
-        ExtentUtility.attachReportLog(ReportStep.INFO_STEP, "Entered credentials and login");
+        // Products page
+        ProductsPage productsPage = new ProductsPage(driver);
 
         // Verificare URL
         String currentUrl = driver.getCurrentUrl();
-        Assert.assertTrue(currentUrl.contains("inventory.html"));
+        Assert.assertTrue(currentUrl.contains("inventory.html"), "URL does not contain inventory.html!");
         ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "URL contains inventory.html");
+        LoggerUtility.infoTest("URL contains inventory.html - expected");
 
-        // Verificare title = Products
-        ProductsPage productsPage = new ProductsPage(driver);
-        String actualPageTitle = productsPage.getPageTitle();
-        String expectedPageTitle = testData.get("expectedPageTitle");
-        Assert.assertEquals(actualPageTitle, expectedPageTitle);
-        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Page title is Products");
+        // Verify Title = Products
+        Assert.assertEquals(productsPage.getPageTitle(), "Products");
+        ExtentUtility.attachReportLog(ReportStep.PASS_STEP, "Products page title is correct");
+        LoggerUtility.infoTest("Products page title is correct");
     }
 
 }

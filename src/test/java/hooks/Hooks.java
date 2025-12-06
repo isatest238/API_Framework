@@ -22,7 +22,6 @@ public class Hooks {
     @BeforeMethod
     public void prepareTest(Method method) {
         testName = this.getClass().getSimpleName();
-       // testName = method.getDeclaringClass().getSimpleName() + " - " + method.getName();
         LoggerUtility.startTestCase(testName);
         ExtentUtility.startTest(testName);
     }
