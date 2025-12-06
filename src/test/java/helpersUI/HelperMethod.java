@@ -37,4 +37,4 @@ public class HelperMethod {
         el.clear();
         el.sendKeys(text);
     }
-}
+ }

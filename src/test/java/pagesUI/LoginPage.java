@@ -18,6 +18,9 @@ public class LoginPage extends BasePage {
     @FindBy(id = "login-button")
     public WebElement loginButton;
 
+    @FindBy(xpath = "//h3[@data-test='error']")
+    public WebElement errorMessage;
+
     // constructor
     public LoginPage(WebDriver driver) {
         super(driver);
@@ -42,9 +45,13 @@ public class LoginPage extends BasePage {
     }
 
 
-    public void loginWithValidCredentials(String username, String password) {
+    public void loginWithCredentials(String username, String password) {
         typeUsername(username);
         typePassword(password);
         clickLoginButton();
+    }
+
+    public String getErrorMessage() {
+        return errorMessage.getText();
     }
 }
