@@ -11,8 +11,8 @@ import java.time.Duration;
 
 public class HelperMethod {
 
-    protected WebDriver driver;
-    protected WebDriverWait wait;
+    public WebDriver driver;
+    public WebDriverWait wait;
 
     public HelperMethod(WebDriver driver) {
         this.driver = driver;
@@ -32,7 +32,7 @@ public class HelperMethod {
         }
 
     }
-    protected void type(WebElement element, String text) {
+    public void type(WebElement element, String text) {
         WebElement el = wait.until(ExpectedConditions.visibilityOf(element));
         el.clear();
         el.sendKeys(text);

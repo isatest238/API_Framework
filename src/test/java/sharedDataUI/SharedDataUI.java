@@ -14,7 +14,7 @@ import java.util.HashMap;
 @Getter
 public class SharedDataUI extends Hooks {
 
-    protected WebDriver driver;
+    public WebDriver driver;
 
     @BeforeMethod
     public void prepareBrowser() {
@@ -30,7 +30,7 @@ public class SharedDataUI extends Hooks {
         }
     }
 
-    protected void loginStandardUser() {
+    public void loginStandardUser() {
         // citim datele din LoginData.properties
         PropertyUtility prop = new PropertyUtility("LoginData");
         HashMap<String, String> data = prop.getAllData();
